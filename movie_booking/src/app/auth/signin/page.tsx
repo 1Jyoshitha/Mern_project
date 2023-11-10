@@ -5,8 +5,9 @@ import styles from './page.module.css';
 import Navbar from '@/components/Navbar/Navbar';
 import '../auth.css';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import logo from '@/assets/logo.png';
-
+// import { getCookie , setCookie} from 'cookies-next';
 // Define an interface for the form data
 interface FormData {
     email: string;
@@ -27,7 +28,8 @@ export default function Signin() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const validationErrors: Record<string, string> = {};
@@ -37,14 +39,99 @@ export default function Signin() {
         if (!formData.password) {
             validationErrors.password = 'Password is required';
         }
-        if (Object.keys(validationErrors).length>0) {
+
+        if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
+
+
+        // fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(formData),
+        //     credentials: 'include'
+        // })
+        //     .then((res) => {
+        //         return res.json();
+        //     })
+        //     .then(async (response) => {
+        //         if (response.ok) {
+        //             toast(response.message, {
+        //                 type: 'success',
+        //                 position: 'top-right',
+        //                 autoClose: 2000
+        //             })
+        //             // await setCookie('authToken', response.data.authToken)
+        //             // await setCookie('refreshToken', response.data.refreshToken)
+        //             // const authToken = await getCookie('authToken');
+        //             // console.log('My Cookie Value:', authToken);
+        //             checkLogin()
+        //         } else {
+        //             toast(response.message, {
+        //                 type: 'error',
+        //                 position: 'top-right',
+        //                 autoClose: 2000
+        //             });
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         toast(error.message, {
+        //             type: 'error',
+        //             position: 'top-right',
+        //             autoClose: 2000
+        //         });
+        //     })
+    };
+
+    const checkLogin = async () => {
+        // let authToken = await getCookie('authToken')
+        // let refreshToken = await getCookie('refreshToken')
+
+        // console.log(authToken, refreshToken)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/checklogin`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((response) => {
+                console.log(response)
+
+
+
+                if (response.ok) {
+                    // toast(response.message, {
+                    //     type: 'success',
+                    //     position: 'top-right',
+                    //     autoClose: 2000
+                    // })
+
+                    window.location.href = "/"
+
+
+                } else {
+                    // toast(response.message, {
+                    //     type: 'error',
+                    //     position: 'top-right',
+                    //     autoClose: 2000
+                    // });
+                }
+            })
+            .catch((error) => {
+                window.location.href = "/"
+            })
     };
 
     return (
         <div className='authout'>
+
             <div className='authin'>
                 <div className="left">
                     <Image src={logo} alt="" className='img' />
@@ -91,7 +178,8 @@ export default function Signin() {
                         </p>
                     </form>
                 </div>
+
             </div>
-        </div>
-    );
+        </div >
+    )
 }

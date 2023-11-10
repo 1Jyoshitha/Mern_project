@@ -16,7 +16,7 @@ const HomeSlider = () => {
 
     const [banners, setBanners] = useState([
         {
-            imgUrl: 'https://assets-in.bmscdn.com/promotions/cms/creatives/1693561351496_motogpsepdesktop.jpg'
+            imgUrl: 'https://assets-in.bmscdn.com/promotions/cms/creatives/1699437370622_tiger3webenglish.jpg'
         },
         {
             imgUrl: 'https://assets-in.bmscdn.com/promotions/cms/creatives/1693472198837_iccdesktop.jpg'
