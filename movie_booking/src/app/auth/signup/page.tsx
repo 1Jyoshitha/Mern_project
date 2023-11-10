@@ -14,7 +14,6 @@ interface FormData {
     email: string;
     password: string;
     confirmPassword: string;
-    city: string;
 }
 
 export default function Signup() {
@@ -23,7 +22,6 @@ export default function Signup() {
         email: '',
         password: '',
         confirmPassword: '',
-        city: ''
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -55,13 +53,51 @@ export default function Signup() {
         if (formData.password !== formData.confirmPassword) {
             validationErrors.confirmPassword = 'Passwords do not match';
         }
-        if (!formData.city) {
-            validationErrors.city = 'City is required';
-        }
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
+
+        // fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/register`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(formData),
+        // })
+        // .then((res) => {
+        //     return res.json();
+        // })
+        // .then((response) => {
+        //     if (response.ok) {
+        //         toast(response.message, {
+        //             type: 'success',
+        //             position: 'top-right',
+        //             autoClose: 2000
+        //         })
+        //         setFormData(
+        //             {
+        //                 name: '',
+        //                 email: '',
+        //                 password: '',
+        //                 confirmPassword: '',
+        //             }
+        //         )
+        //     } else {
+        //         toast(response.message, {
+        //             type: 'error',
+        //             position: 'top-right',
+        //             autoClose: 2000
+        //         });
+        //     }
+        // })
+        // .catch((error) => {
+        //     toast(error.message, {
+        //         type: 'error',
+        //         position: 'top-right',
+        //         autoClose: 2000
+        //     });
+        // })
     }
     return (
         <div className='authout'>
@@ -123,20 +159,6 @@ export default function Signup() {
                             />
                             {errors.confirmPassword && (
                                 <span className="formerror">{errors.confirmPassword}</span>
-                            )}
-                        </div>
-
-                        <div className="forminput_cont">
-                            <label>City</label>
-                            <input
-                                type="text"
-                                placeholder="Enter Your City"
-                                name="city"
-                                value={formData.city}
-                                onChange={handleChange}
-                            />
-                            {errors.city && (
-                                <span className="formerror">{errors.city}</span>
                             )}
                         </div>
 

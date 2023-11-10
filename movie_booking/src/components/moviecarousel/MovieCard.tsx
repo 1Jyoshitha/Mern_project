@@ -4,24 +4,21 @@ import { useRouter } from 'next/navigation';
 import { BsFillStarFill } from 'react-icons/bs';
 import './MovieCard.css'
 
-const MovieCard = (data: any) => {
+const MovieCard = (data: MovieCardType) => {
     const router = useRouter();
-    const { _id, title, genre, rating, portraitImgUrl } = data.Movie;
-    const { city } = data.user;
-    console.log(city)
-    // const city = 'mumbai'
-
+    const city = "mumbai"
+    const { title, imageUrl, _id, rating, type } = data;
     return (
         <div
             className='moviecard'
             onClick={() => {
-                router.push(`/${city}/movies/${_id}`)
+                router.push(`/${city}/movies/${title}`)
 
             }}
         >
             <div className='movieimg'
                 style={{
-                    backgroundImage: `url(${portraitImgUrl})`
+                    backgroundImage: `url(${imageUrl})`
                 }}
             >
                 <p className='rating'>
@@ -33,7 +30,7 @@ const MovieCard = (data: any) => {
                     {title}
                 </p>
                 <p className='type'>
-                    {genre.join(", ")}
+                    {type}
                 </p>
             </div>
         </div>
