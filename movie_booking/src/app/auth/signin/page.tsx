@@ -45,45 +45,43 @@ export default function Signin() {
             return;
         }
 
-
-        // fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(formData),
-        //     credentials: 'include'
-        // })
-        //     .then((res) => {
-        //         return res.json();
-        //     })
-        //     .then(async (response) => {
-        //         if (response.ok) {
-        //             toast(response.message, {
-        //                 type: 'success',
-        //                 position: 'top-right',
-        //                 autoClose: 2000
-        //             })
-        //             // await setCookie('authToken', response.data.authToken)
-        //             // await setCookie('refreshToken', response.data.refreshToken)
-        //             // const authToken = await getCookie('authToken');
-        //             // console.log('My Cookie Value:', authToken);
-        //             checkLogin()
-        //         } else {
-        //             toast(response.message, {
-        //                 type: 'error',
-        //                 position: 'top-right',
-        //                 autoClose: 2000
-        //             });
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         toast(error.message, {
-        //             type: 'error',
-        //             position: 'top-right',
-        //             autoClose: 2000
-        //         });
-        //     })
+        console.log(process.env.NEXT_PUBLIC_BACKEND_API)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            credentials: 'include'
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then(async (response) => {
+                console.log('login res ', response)
+                if (response.ok) {
+                    toast(response.message, {
+                        type: 'success',
+                        position: 'top-right',
+                        autoClose: 2000
+                    })
+                    window.location.href = '/'
+                    
+                } else {
+                    toast(response.message, {
+                        type: 'error',
+                        position: 'top-right',
+                        autoClose: 2000
+                    });
+                }
+            })
+            .catch((error) => {
+                toast(error.message, {
+                    type: 'error',
+                    position: 'top-right',
+                    autoClose: 2000
+                });
+            })
     };
 
     const checkLogin = async () => {
@@ -96,24 +94,25 @@ export default function Signin() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include'
+            credentials: 'include',
+
         })
             .then((res) => {
                 return res.json();
             })
             .then((response) => {
-                console.log(response)
+                console.log('check login res ', response)
 
 
 
                 if (response.ok) {
                     // toast(response.message, {
-                    //     type: 'success',
-                    //     position: 'top-right',
-                    //     autoClose: 2000
+                    // type: 'success',
+                    // position: 'top-right',
+                    // autoClose: 2000
                     // })
 
-                    window.location.href = "/"
+                    window.location.href = "/";
 
 
                 } else {
@@ -129,9 +128,10 @@ export default function Signin() {
             })
     };
 
+
+
     return (
         <div className='authout'>
-
             <div className='authin'>
                 <div className="left">
                     <Image src={logo} alt="" className='img' />
@@ -174,12 +174,11 @@ export default function Signin() {
                         </button>
 
                         <p className="authlink">
-                            Don't have an account? <Link href="/auth/signup">Register</Link>
+                            Don&apos;t have an account? <Link href="/auth/signup">Register</Link>
                         </p>
                     </form>
                 </div>
-
             </div>
-        </div >
+        </div>
     )
 }
