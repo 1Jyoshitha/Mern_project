@@ -11,6 +11,7 @@ const Screen = require('../Models/ScreenSchema')
 const errorHandler = require('../Middlewares/errorMiddleware');
 const authTokenHandler = require('../Middlewares/checkAuthToken');
 const adminTokenHandler = require('../Middlewares/checkAdminToken');
+const { route } = require('./Auth');
 
 
 function createResponse(ok, message, data) {
@@ -392,6 +393,42 @@ router.get('/getuserbookings/:id' , authTokenHandler , async (req , res , next) 
         next(err); // Pass any errors to the error handling middleware
     }
 })
+
+router.put('/updateBooking/:id', async (req, res, next) => {
+    try {
+      const bookingId = req.params.id;
+      const updatedBookingData = req.body;
+
+      // Check if the booking exists
+      const existingBooking = await Booking.findById(bookingId);
+      if (!existingBooking) {
+        return res.status(404).json(createResponse(false, 'Booking not found', null));
+      }
+
+      // Update the booking
+      const updatedBooking = await Booking.findByIdAndUpdate(bookingId, updatedBookingData, { new: true });
+
+      res.status(200).json(createResponse(true, 'Booking updated successfully', updatedBooking));
+    } catch (err) {
+      next(err); // Pass any errors to the error handling middleware
+    }
+});
+
+  router.delete('/deleteBooking/:id', async (req, res, next) => {
+    try {
+      const bookingId = req.params.id;
+  
+      const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+  
+      if (!deletedBooking) {
+        return res.status(404).json(createResponse(false, 'Booking not found', null));
+      }
+  
+      res.status(200).json(createResponse(true, 'Booking deleted successfully', deletedBooking));
+    } catch (err) {
+      next(err); // Pass any errors to the error handling middleware
+    }
+  });
 
 
 
